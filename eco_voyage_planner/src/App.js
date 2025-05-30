@@ -9,10 +9,53 @@ import './App.css';
 function App() {
   // (For demonstration, search and state logic are minimal.)
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchResult, setSearchResult] = useState(null);
+
+  // PUBLIC_INTERFACE
+  /**
+   * Handles the eco-planner destination search.
+   * Accepts any destination and gives special feedback for Indian destinations.
+   */
   const handleSearch = (e) => {
     e.preventDefault();
-    // Placeholder for eco-planner search logic
-    alert(`Searching for: ${searchTerm}`);
+    const trimmed = searchTerm.trim();
+
+    if (!trimmed) {
+      setSearchResult({ error: "Please enter a destination to search." });
+      return;
+    }
+
+    // Check if destination is in India (basic: contains "<city>, India" or is an Indian state/city)
+    // A more robust version could use a geolocation API, but for now, cover basics.
+    const indianStatesAndCities = [
+      "delhi", "mumbai", "kolkata", "chennai", "bengaluru", "bangalore",
+      "hyderabad", "ahmedabad", "pune", "jaipur", "lucknow", "kanpur", "nagpur",
+      "indore", "thane", "bhopal", "visakhapatnam", "pimpri", "patna", "vadodara",
+      "ghaziabad", "ludhiana", "agra", "nashik", "faridabad", "meerut", "rajkot",
+      "varanasi", "srinagar", "aurangabad", "dhanbad", "amritsar", "navi mumbai",
+      "allahabad", "ranchi", "howrah", "coimbatore", "jabalpur", "gwalior", "vijayawada",
+      "jodhpur", "madurai", "raipur", "kota", "guwahati", "chandigarh", "solapur",
+      "hubli", "mysore", "tiruchirappalli", "bareilly", "aligarh", "tiruppur", "moradabad",
+      "gurgaon", "jalandhar", "bhubaneswar", "salem", "warangal", "ghantali", "thane",
+      "kerala", "tamil nadu", "maharashtra", "uttar pradesh", "punjab", "rajastan", "gujarat", 
+      "karnataka", "madhya pradesh", "west bengal", "andhra pradesh", "odisha", "assam", "himachal pradesh",
+      "uttarakhand", "chhattisgarh", "goa", "sikkim", "tripura", "manipur", "meghalaya", "mizoram", "nagaland"
+    ];
+    const lower = trimmed.toLowerCase();
+    const isIndian = lower.includes('india') ||
+      indianStatesAndCities.some(name => lower.includes(name));
+
+    if (isIndian) {
+      setSearchResult({
+        message: `Great! We support many eco-friendly destinations in India. Exploring: "${searchTerm}".`
+      });
+    } else {
+      setSearchResult({
+        message: `Searching for: "${searchTerm}" (Global eco-destinations coming soon!)`
+      });
+    }
+    
+    // Here you could add backend lookup, API calls, etc.
   };
 
   return (
