@@ -118,7 +118,12 @@ function App() {
                   background: "transparent",
                   color: "#1B3B2C"
                 }}
-                onChange={e => setSearchTerm(e.target.value)}
+                autoFocus
+                autoComplete="off"
+                onChange={e => {
+                  setSearchTerm(e.target.value);
+                  setSearchResult(null); // Reset on edit
+                }}
               />
               <button className="btn btn-large"
                 type="submit"
@@ -135,6 +140,24 @@ function App() {
                 Plan!
               </button>
             </form>
+            {searchResult && (
+              <div
+                style={{
+                  margin: "5px auto 0",
+                  color: searchResult.error ? "#cf0202" : "#208155",
+                  background: searchResult.error ? "#fbecec" : "#eafcf0",
+                  border: searchResult.error ? "1.1px solid #d67a7a" : "1.1px solid #a2efbb",
+                  maxWidth: 400,
+                  borderRadius: 6,
+                  fontWeight: searchResult.error ? 500 : 600,
+                  padding: "10px 10px 9px",
+                  fontSize: "1.03rem"
+                }}
+                aria-live="polite"
+              >
+                {searchResult.message || searchResult.error}
+              </div>
+            )}
           </div>
         </section>
 
