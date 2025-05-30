@@ -1,0 +1,4 @@
+{
+    "command": "PORT=<port> BROWSER=none npm start",
+    "working_directory": "/home/kavia/workspace/code-generation/ecovoyage-planner-27300-473a4e29/eco_voyage_planner"
+}
